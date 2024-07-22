@@ -1,0 +1,25 @@
+services:
+  php:
+    build: .
+    volumes:
+      - ./src:/var/www/html:delegated
+    ports:
+      - "9000:9000"
+
+  database:
+    image: postgres:15
+    env_file:
+      - "./docker-conf/postgres.env"
+      - postgres-data:/var/lib/posgresql/data
+    ports:
+      - "5432:5432"
+
+  composer:
+    build: 
+      context: ./docker-conf
+      dockerfile: composer.dockerfile
+    volumes:
+      - ./src:/var/www/html
+
+volumes:
+  postgres-data:
